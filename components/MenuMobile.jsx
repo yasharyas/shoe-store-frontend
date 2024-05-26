@@ -18,7 +18,7 @@ const subMenuData = [
 ];
 
 
-const Menu = ({showCatMenu,setShowCatMenu}) => {
+const MenuMobile = ({showCatMenu,setShowCatMenu}) => {
 
     return (
     <ul className='hidden md:flex items-center gap-8 font-medium text-black'>
@@ -31,8 +31,11 @@ const Menu = ({showCatMenu,setShowCatMenu}) => {
                         onMouseLeave={()=>setShowCatMenu(false)}
 
                         >
+                            <div>
                             {item.name}
                             <BsChevronDown size={14}/>
+                            </div>
+                            
 
                             {showCatMenu &&(
                                 <ul className="bg-white absolute top-6 left-0 min-w-[250px] px-1 py-1 text-black shadow-lg">
@@ -63,4 +66,4 @@ const Menu = ({showCatMenu,setShowCatMenu}) => {
     </ul>
     )
 }
-export default Menu
+export default MenuMobile
