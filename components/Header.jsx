@@ -30,11 +30,15 @@ const Header = () => {
                 showCatMenu={showCatMenu} 
                 setShowCatMenu={setShowCatMenu} />
 
-                <MenuMobile 
+
+
+                {mobileMenu && (<MenuMobile 
                 showCatMenu={showCatMenu} 
                 setShowCatMenu={setShowCatMenu}
                 setMobileMenu={setMobileMenu}
                 />
+                )}
+
 
                 <div className="flex items-center gap-2 text-black">
                     {/* icon-start */}
