@@ -45,6 +45,7 @@ const CartItem = () => {
                 <option value='7'>UK 10</option>
                 <option value='8'>UK 11</option>
                 <option value='9'>UK 11.5</option>
+                <option value='10'>UK 12</option>
               </select>
             </div>
 
