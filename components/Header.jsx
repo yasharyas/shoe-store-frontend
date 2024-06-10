@@ -3,7 +3,7 @@ import Wrapper from "./Wrapper";
 import Link from "next/link";
 import Menu from "./Menu";
 import MenuMobile from "./menuMobile";
-
+import { fetchDataFromApi } from "@/utils/api";
 // icon import 
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BsCart } from "react-icons/bs";
@@ -16,6 +16,8 @@ const Header = () => {
     const [showCatMenu, setShowCatMenu] = useState(false);
     const [show, setShow] = useState("translate-y-0");
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [categories, setCategories] = useState(null);
+
 
 
     const controlNavbar = () => {
@@ -42,6 +44,16 @@ const Header = () => {
     },[lastScrollY])
 
 
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        const { data } = await fetchDataFromApi("/api/categories?populate=*");
+        setCategories(data);
+    };
+
+
 
     return (
         <header
@@ -54,7 +66,9 @@ const Header = () => {
                 
                 <Menu 
                 showCatMenu={showCatMenu} 
-                setShowCatMenu={setShowCatMenu} />
+                setShowCatMenu={setShowCatMenu} 
+                categories={categories}
+                />
 
 
 
@@ -62,6 +76,8 @@ const Header = () => {
                 showCatMenu={showCatMenu} 
                 setShowCatMenu={setShowCatMenu}
                 setMobileMenu={setMobileMenu}
+                categories={categories}
+
                 />
                 )}
 
