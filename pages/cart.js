@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Wrapper from "@/components/Wrapper";
 import CartItem from "@/components/CartItem";
+import { useSelector } from 'react-redux';
 
 
 const Cart = () => {
+  const {cartItems} = useSelector((state => state.cart))
+  const subTotal = useMemo(() => {
+    return cartItems.reduce(
+        (total, val) => total + val.attributes.price,
+        0
+    );
+}, [cartItems]);
+
   return (
     <div className="w-full md:py-20">
         <Wrapper>
+        {cartItems.length > 0 && (
+           <>
+        
           {/* HEADING AND PARAGRAPH START */}
           <div className="text-center max-w-[800px] mx-auto mt-8 md:mt-0">
             <div className="text-[28px] md:text-[34px] mb-5 font-semibold leading-tight">
@@ -24,14 +36,12 @@ const Cart = () => {
             {/* CART ITEMS START */}
             <div className="flex-[2]">
               <div className="text-lg font-bold">
-              Cart Items
+                  Cart Items
               </div>
-              <CartItem/>
-              <CartItem/>
-              <CartItem/>
-              <CartItem/>
-              <CartItem/>
-            </div>
+              {cartItems.map((item) => (
+                  <CartItem key={item.id} data={item} />
+              ))}
+            </div>  
 
             {/* SUMMARY START  */}
 
@@ -39,8 +49,14 @@ const Cart = () => {
               <div className='text-lg font-bold'>Summary</div>
                 <div className='p-5 my-5 bg-black/[0.5] rounded-xl'>
                   <div className='flex justifu-between'>
-                    <div className='uppercase text-md md:text-lg font-medium text-black'>subtotal</div>
-                    <div className='text-md md:text-lg font-medium text-black'>Rs 40 230.00</div>
+                    <div className='uppercase text-md md:text-lg 
+                      font-medium text-black'>
+                      subtotal
+                    </div>
+                    <div className='text-md md:text-lg 
+                      font-medium text-black'>
+                      &#8377; {subTotal}
+                    </div>
                   </div>
                   <div className='text-sm md:text-md py-5 border-t mt-5'>
                   The subtotal reflects the total price of your
@@ -51,7 +67,10 @@ const Cart = () => {
                 </div>
                 {/* BUTTON START */}
                 <button
-                  className="w-full py-4 rounded-full bg-black text-white text-lg font-medium transition-transform active:scale-95 mb-3 hover:opacity-75 flex items-center gap-2 justify-center"
+                  className="w-full py-4 rounded-full bg-black 
+                  text-white text-lg font-medium transition-transform 
+                  active:scale-95 mb-3 hover:opacity-75 flex items-center
+                  gap-2 justify-center"
                   >
                   Checkout
                 </button>
@@ -63,9 +82,15 @@ const Cart = () => {
           </div>
 
           {/* CART CONTENT END */}
+        </>
+        )}
+       
+
+
 
           {/* this is empty screen  */}
-          {/* <div className="flex-[2] flex flex-col items-center pb-[50px] md:-mt-14">
+
+          { cartItems.length <1 && ( <div className="flex-[2] flex flex-col items-center pb-[50px] md:-mt-14">
             <Image
                 src="/empty-cart.jpg"
                 width={300}
@@ -86,7 +111,7 @@ const Cart = () => {
             >
                 Continue Shopping
             </Link>
-        </div> */}
+        </div>)}
 
         </Wrapper>
     </div>
