@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { IoMdHeartEmpty } from "react-icons/io";
 import Wrapper from '@/components/Wrapper';
 import ProductDetailsCarousel from '@/components/ProductDetailsCarousel';
@@ -6,8 +6,10 @@ import RelatedProducts from '@/components/RelatedProducts';
 import { fetchDataFromApi } from '@/utils/api';
 import { getDiscountedPricePercentage } from '@/utils/helper';
 import ReactMarkdown from 'react-markdown';
-
-
+import { addToCart } from '@/store/cartSlice';
+import { useSelector, useDispatch } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 
 //json/string to markdown converter
@@ -46,12 +48,27 @@ const convertToMarkdown = (description) => {
 const ProductDetails = ({product, products}) => {
 const [selectedSize, setSelectedSize] = useState();
 const [showError, setShowError] = useState(false);
+const dispatch = useDispatch()
 const p = product?.data?.[0]?.attributes;   
 const markdownDescription = convertToMarkdown(p.description);
+
+const notify = () => {
+    toast.success("Success. Check your cart!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+    });
+};
 
 
 return (
     <div className='w-full md:py-20'>
+        <ToastContainer/>
         <Wrapper>
             <div className='flex flex-col lg:flex-row md:px-10 gap-[50px] lg:gap-[100px]'>
                  {/* left col start  */}
@@ -109,7 +126,7 @@ return (
                     {/* HEADING END */}
                 </div>
                         {/* SIZE START  */}
-                            <div id="sizesGrid" className='grid grid-cols-3 gap-2'>
+                            <div id="sizesGrid" className='grid grid-cols-3 gap-2 pb-5'>
                             {p.size.data.map((item, i) => (
                                     <div
                                         key={i}
@@ -163,6 +180,7 @@ return (
                         } else {
                             dispatch(
                                 addToCart({
+                                    // "Product 1"
                                     ...product?.data?.[0],
                                     selectedSize,
                                     oneQuantityPrice: p.price,
